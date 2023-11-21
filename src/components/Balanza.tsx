@@ -4,15 +4,18 @@ import calcularResistencia from '@/lib/interpolacion';
 import { useEffect, useRef, useState } from 'react';
 import { useDynamicList } from "@/DynamicListContext";
 import { calcularEsfuerzoYDeformacion } from '@/lib/esfuerzoYdeformacion';
+import { Button } from '@chakra-ui/react';
+import Trash from '../../public/icons/trash';
 
 const Balanza = () => {
-    const { itemsX, itemsY, resistencia, setResistencia }: any = useDynamicList();
+    const { resistencia, getResistencia, setResistencia }: any = useDynamicList();
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [pesoObjeto, setPesoObjeto] = useState<number>(0);
     const [material, setMaterial] = useState<any>({
         deformacionAxial: 0,
         esfuerzoAxial: 0
     });
+
 
 
     useEffect(() => {
@@ -30,6 +33,7 @@ const Balanza = () => {
 
             // Resto del código
             const drawImages = () => {
+
                 // Limpiar el canvas
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.drawImage(fondo, 0, 0, 800, 300); // Posición y tamaño del fondo
@@ -84,7 +88,6 @@ const Balanza = () => {
                             // Evento movimiento del mouse para arrastrar el mineral
                             canvas.addEventListener('mousemove', (e) => {
                                 if (isDragging) {
-                                    setResistencia(0)
                                     setMaterial({
                                         deformacionAxial: 0,
                                         esfuerzoAxial: 0
@@ -121,27 +124,22 @@ const Balanza = () => {
                                     if (mineralEnBalanza) {
                                         ctx.drawImage(mineralImg, newMineralX, newMineralY, mineralAnchura, mineralAltura);
                                         ctx.fillText(`${pesoObjeto} kg`, 395, 281)
+
                                         calcularEsfuerzoYDeformacion(pesoObjeto).then((resultados: any) => {
                                             setMaterial(resultados)
                                         })
-                                            .catch((error: any) => {
-                                                console.error('Error:', error);
-                                            });
-                                        const res = calcularResistencia(97.74, itemsX, itemsY);
-                                        console.log(res)
-                                        setResistencia(res)
                                     } else {
+                                        setResistencia(0)
                                         ctx.drawImage(mineralImg, newMineralX, newMineralY, mineralAnchura, mineralAltura);
                                         ctx.fillText(`0 kg`, 395, 281);
 
                                     }
                                     // Actualizar la posición solo si el objeto está siendo arrastrado
                                     canvas.addEventListener('mousedown', (e) => {
-                                        setResistencia(0)
-                                        setMaterial({
-                                            deformacionAxial: 0,
-                                            esfuerzoAxial: 0
-                                        })
+                                        /*  setMaterial({
+                                             deformacionAxial: 0,
+                                             esfuerzoAxial: 0
+                                         }) */
                                         const mouseX = e.clientX - canvas.getBoundingClientRect().left;
                                         const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
@@ -179,8 +177,12 @@ const Balanza = () => {
             drawImages();
         }
 
-
     }, [pesoObjeto]);
+
+
+    const handleGetResis = () => {
+        getResistencia();
+    }
 
     const handleChangePeso = (nuevoPeso: number) => {
         setPesoObjeto(nuevoPeso);
@@ -190,7 +192,7 @@ const Balanza = () => {
         <div>
             <canvas ref={canvasRef} className='border border-black mx-auto my-4 ' width={800} height={300}></canvas>
             <div className={"inline-flex"}>
-                <div className="inline-flex border border-black rounded-lg bg-white h-14">
+                <div className="inline-flex border border-black my-4 rounded-lg bg-white h-14">
                     <input
                         className='text-center m-auto h-10 rounded-lg outline-none focus:border-transparent focus:ring-0'
                         type="number"
@@ -204,12 +206,31 @@ const Balanza = () => {
                 </div>
                 <div className='inline-flex'>
                     <div className="m-4">
-                        Deformaicion Axial:&nbsp; {material.deformacionAxial.toFixed(4)} cm
-                        <br />
-                        Esfuerzo Axial (σ):&nbsp; {material.esfuerzoAxial.toFixed(4)}
+                        <table className='border border-black'>
+                            <tbody className='border border-black m-2'>
+                                <tr>
+                                    <td className='border border-black m-2 '>Deformación Axial:</td>
+                                    <td className='border border-black'>{material.deformacionAxial.toFixed(4)} cm</td>
+                                </tr>
+                                <tr>
+                                    <td className='border border-black'>Esfuerzo Axial:</td>
+                                    <td className='border border-black'>{material.esfuerzoAxial.toFixed(4)}</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                     <div className="m-4">
-                        Resistencia del material: {resistencia}
+                        <div className='inline-flex'>
+                            <p className='my-auto mx-2'> Resistencia del material:</p>
+                            <input type="text" className='border bg-white text-center m-auto mr-2 h-10 rounded-lg outline-none focus:border-transparent focus:ring-0'
+                                id="" value={resistencia}
+                                disabled
+                            />
+                            <button type="submit" className='px-3  md:px-4 py-1 md:py-2 bg-green-600 border border-green-600 text-white rounded-lg hover:bg-white hover:text-black transition duration-150 ease-in-outs'
+                                onClick={handleGetResis}
+                            >Calcular</button>
+                        </div>
+
                     </div>
                 </div>
             </div>

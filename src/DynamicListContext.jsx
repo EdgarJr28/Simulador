@@ -1,5 +1,6 @@
 'use client'
 import React, { createContext, useContext, useState } from 'react';
+import calcularResistencia from '@/lib/interpolacion';
 
 const DynamicListContext = createContext(null);
 
@@ -26,6 +27,14 @@ export const DynamicListProvider = ({ children }) => {
         setItemsY(updatedItems);
     };
 
+    const getResistencia = () => {
+        console.log(itemsX, itemsY);
+        calcularResistencia(97.74, itemsX, itemsY).then((res) => {
+            console.log(res)
+            setResistencia(res)
+        })
+    }
+
     const values = {
         itemsX,
         itemsY,
@@ -34,7 +43,8 @@ export const DynamicListProvider = ({ children }) => {
         addItemY,
         removeItemX,
         removeItemY,
-        setResistencia
+        setResistencia,
+        getResistencia
     };
 
     return (
