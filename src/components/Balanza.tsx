@@ -84,7 +84,11 @@ const Balanza = () => {
                             // Evento movimiento del mouse para arrastrar el mineral
                             canvas.addEventListener('mousemove', (e) => {
                                 if (isDragging) {
-
+                                    setResistencia(0)
+                                    setMaterial({
+                                        deformacionAxial: 0,
+                                        esfuerzoAxial: 0
+                                    })
                                     const mouseX = e.clientX - canvas.getBoundingClientRect().left;
                                     const mouseY = e.clientY - canvas.getBoundingClientRect().top;
 
@@ -129,10 +133,6 @@ const Balanza = () => {
                                     } else {
                                         ctx.drawImage(mineralImg, newMineralX, newMineralY, mineralAnchura, mineralAltura);
                                         ctx.fillText(`0 kg`, 395, 281);
-                                        setMaterial({
-                                            deformacionAxial: 0,
-                                            esfuerzoAxial: 0
-                                        })
 
                                     }
                                     // Actualizar la posición solo si el objeto está siendo arrastrado

@@ -19,10 +19,9 @@ export function calcularEsfuerzoYDeformacion(peso: any) {
         // Devolver los resultados como un objeto
         const resultados = { esfuerzoAxial: esfuerzoAxial, deformacionAxial: deformacionAxial };
 
-        // Simulación de retardo de tiempo antes de resolver la promesa
-        setTimeout(() => {
-            resolve(resultados); // Resuelve la promesa con los resultados
-        }, 1000); // Cambia el tiempo de espera según sea necesario
+
+        resolve(resultados); // Resuelve la promesa con los resultados
+
     });
 }
 
