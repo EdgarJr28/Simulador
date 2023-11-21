@@ -57,7 +57,7 @@ const DynamicListXY = () => {
             </div >
 
             <div className="border border-black w-[50%] h-[200px] float-right mx-auto  rounded-lg">
-                <div className='float-left mx-12'>
+                <div className='float-left mx-12 '>
                     <h3 className='border border-black text-lg w-28 text-center rounded-lg m-2'>Columna X</h3>
                     <ul className='text-center'>
                         {itemsX.map((item: any, index: any) => (

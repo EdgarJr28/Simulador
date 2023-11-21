@@ -205,28 +205,31 @@ const Balanza = () => {
                     </div>
                 </div>
                 <div className='inline-flex'>
-                    <div className="m-4">
-                        <table className='border border-black'>
-                            <tbody className='border border-black m-2'>
+                    <div className="m-4 border border-black rounded-lg w-full h-14">
+                        <table className='border w-[100%]'>
+                            <tbody className='border border-black m-2 '>
                                 <tr>
-                                    <td className='border border-black m-2 '>Deformación Axial:</td>
-                                    <td className='border border-black'>{material.deformacionAxial.toFixed(4)} cm</td>
+                                    <td className='border border-black m-2'>Deformación Axial</td>
+                                    <td className='border border-black'>{material.deformacionAxial.toFixed(3)} cm</td>
                                 </tr>
                                 <tr>
-                                    <td className='border border-black'>Esfuerzo Axial:</td>
-                                    <td className='border border-black'>{material.esfuerzoAxial.toFixed(4)}</td>
+                                    <td className='border border-black rounded-lg'>Esfuerzo Axial</td>
+                                    <td className='border border-black rounded-lg'>{material.esfuerzoAxial.toFixed(3)}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
-                    <div className="m-4">
+                    <div className="m-1 ml-10">
                         <div className='inline-flex'>
-                            <p className='my-auto mx-2'> Resistencia del material:</p>
-                            <input type="text" className='border bg-white text-center m-auto mr-2 h-10 rounded-lg outline-none focus:border-transparent focus:ring-0'
-                                id="" value={resistencia}
-                                disabled
-                            />
-                            <button type="submit" className='px-3  md:px-4 py-1 md:py-2 bg-green-600 border border-green-600 text-white rounded-lg hover:bg-white hover:text-black transition duration-150 ease-in-outs'
+                            <div className=' flex flex-col items-center text-center w-full'>
+                                <p className=' mx-2'> Resistencia del material</p>
+                                <input type="text" className='border bg-white text-center m-auto mr-2 h-10 rounded-lg outline-none focus:border-transparent focus:ring-0'
+                                    id="" value={resistencia}
+                                    disabled
+                                />
+                            </div>
+
+                            <button type="submit" className='h-10 px-3 mt-6  md:px-4 py-1 md:py-2 bg-green-600 border border-green-600 text-white rounded-lg hover:bg-white hover:text-black transition duration-150 ease-in-outs'
                                 onClick={handleGetResis}
                             >Calcular</button>
                         </div>
